@@ -17,15 +17,44 @@
     }
 
   </style>
+
+  <script type="application/javascript" src="calcul.js"></script>
   <script type="application/javascript" src="entity.js"></script>
   <script type="application/javascript" src="world.js"></script>
   <script type="application/javascript" src="animation.js"></script>
+  <script type="application/javascript">
+    function rawr()
+    {
+      var XD = document.getElementById("saart");
+      var mouse = {x: 0, y: 0};
+
+      document.addEventListener('mousemove', function(e){ 
+          mouse.x = e.clientX || e.pageX; 
+          mouse.y = e.clientY || e.pageY;
+          XD.innerHTML = mouse.x + " ; " + mouse.y;
+      }, false);
+    }
+    function armmove(event){
+      var cal = new calcul();
+      var res = cal.calculAllPoint(100,100,event.clientX-560,(event.clientY-71));
+      var up = document.getElementById("upperarm");
+      var fore = document.getElementById("forearm");
+      up.setAttribute("x2",res[1].x);
+      up.setAttribute("y2",res[1].y);
+      fore.setAttribute("x1",res[1].x);
+      fore.setAttribute("y1",res[1].y);
+      fore.setAttribute("x2",res[2].x);
+      fore.setAttribute("y2",res[2].y);
+    }
+  </script>
 </head>
-<body onload="setup();">
-  <section>
-  <h1>Animation titanesque</h1>
+<body onload="setup();rawr();">
+  <section onmousemove='armmove(event);'>
+  <h1 id="saart">Animation titanesque</h1>
 
   <svg id="canvas" width="800" height="600">
+    <line id="upperarm" x1="100" y1="100" x2="200" y2="100" style="stroke:rgb(255,0,0);stroke-width:2"/>
+    <line id="forearm" x1="200" y1="100" x2="300" y2="100" style="stroke:rgb(0,255,0);stroke-width:2"/>
   </svg> 
   </section>
 </body>
