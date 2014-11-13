@@ -23,6 +23,7 @@
   <script type="application/javascript" src="world.js"></script>
   <script type="application/javascript" src="animation.js"></script>
   <script type="application/javascript">
+/*
     function rawr()
     {
       var XD = document.getElementById("saart");
@@ -34,9 +35,12 @@
           XD.innerHTML = mouse.x + " ; " + mouse.y;
       }, false);
     }
+
+    */
+  
     function armmove(event){
       var cal = new calcul();
-      var res = cal.calculAllPoint(100,100,event.clientX-560,(event.clientY-71));
+      var res = cal.calculAllPoint(600,100,event.clientX-560,(event.clientY-71));
       var up = document.getElementById("upperarm");
       var fore = document.getElementById("forearm");
       up.setAttribute("x2",res[1].x);
@@ -51,11 +55,18 @@
 <body onload="setup();rawr();">
   <section onmousemove='armmove(event);'>
   <h1 id="saart">Animation titanesque</h1>
-
   <svg id="canvas" width="800" height="600">
-    <line id="upperarm" x1="100" y1="100" x2="200" y2="100" style="stroke:rgb(255,0,0);stroke-width:2"/>
-    <line id="forearm" x1="200" y1="100" x2="300" y2="100" style="stroke:rgb(0,255,0);stroke-width:2"/>
+    <!-- Le canvas SVG -->
+    <rect x="0" y="0" width="800" height="600" fill="#7EC0EE" />
+    <g id="entity" transform="translate(270, 50)">
+      <use id="corps" xlink:href="assets/body.svg#corps" transform="translate(0, 250)"></use>
+      <use id="tete" xlink:href="assets/head.svg#tete" transform="translate(7)"></use>
+    </g>
+    <line id="upperarm" x1="600" y1="100" x2="700" y2="100" style="stroke:rgb(255,0,0);stroke-width:2"/>
+    <line id="forearm" x1="700" y1="100" x2="800" y2="100" style="stroke:rgb(0,255,0);stroke-width:2"/>
   </svg> 
+    <!-- Fin du canvas SVG -->
+  
   </section>
 </body>
 </html>

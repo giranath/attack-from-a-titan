@@ -55,4 +55,4 @@ Entity.prototype.onUpdate = function(dt) {
   // Mise à jour de la position
   this.position.x += this.velocity.x * dt;
   this.position.y += this.velocity.y * dt;
-}
+};
