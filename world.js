@@ -1,12 +1,20 @@
 /**
  * @brief Décrit un monde dans lequel se déroule une simulation
  */
-function World()
+function World(svgId)
 {
   var self = this;
   var state = 0;
 
   this.entities = [];
+  this.svg = null;
+
+  this.__autokey = 0;
+ 
+  if(svgId != undefined) 
+  {
+    this.svg = document.getElementById(svgId);
+  }
   
   /**
    * @brief Retourne l'état actuel du monde
@@ -77,14 +85,18 @@ World.prototype.step = function(dt)
 
 /**
  * @brief Affiche l'état actuel du monde à l'écran
+ * @param svgId L'identifiant du SVG
  */
-World.prototype.draw = function(svgId)
+World.prototype.draw = function()
 {
-  var svg = document.getElementById(svgId);   // On récupère l'élément svg
-  
-  this.each(function(index, entite)
+  var self = this;
+
+  this.each(function(index, entite) 
   {
-    // On dessine l'entité
+    var element = self.svg.getElementById("entity_" + index);
+    // element.setAttribute("cx", entite.position.x);
+    // element.setAttribute("cy", entite.position.y);
+    element.setAttribute("transform", "translate(" + entite.position.x + ", " + entite.position.y  + ")")
   });
 }
 
@@ -95,7 +107,15 @@ World.prototype.draw = function(svgId)
  */
 World.prototype.addEntity = function(entity)
 {
-  return this.entities.push(entity);
+  var element = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  element.id = "entity_" + this.__autokey; 
+  element.setAttribute("r", "40");
+
+  this.svg.appendChild(element);
+   
+  this.entities.push(entity);
+
+  return this.__autokey++;
 }
 
 /**
@@ -126,6 +146,9 @@ World.prototype.removeEntity = function(index)
   
   if(this.exists(index))
   {
+    var element = this.svg.getElementById("entity_" + index);
+    element.parentElement.removeChild(element);
+
     this.entities[index] = null;
     removed = true;
   }

@@ -23,10 +23,18 @@
 </head>
 <body onload="setup();">
   <section>
-  <h1>Animation titanesque</h1>
+    <h1>Animation titanesque</h1>
 
-  <svg id="canvas" width="800" height="600">
-  </svg> 
+    <!-- Le canvas SVG -->
+    <svg id="canvas" width="800" height="600">
+      <rect x="0" y="0" width="800" height="600" fill="#7EC0EE" />
+      <g id="entity" transform="translate(270, 50)">
+        <use id="corps" xlink:href="assets/body.svg#corps" transform="translate(0, 250)"></use>
+        <use id="tete" xlink:href="assets/head.svg#tete" transform="translate(7)"></use>
+      </g>
+    </svg> 
+    <!-- Fin du canvas SVG -->
+  
   </section>
 </body>
 </html>
