@@ -7,8 +7,8 @@ function point(_x,_y)
 function calcul()
 {
   var self = this;
-  this.forearm_size = 100;
-  this.upperarm_size = 100;
+  this.forearm_size = 200;
+  this.upperarm_size = 200;
 
   this.calculAllPoint = function(x1,y1,x2,y2)
   {
