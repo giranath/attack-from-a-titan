@@ -35,12 +35,12 @@
           XD.innerHTML = mouse.x + " ; " + mouse.y;
       }, false);
     }
-
-    
   
-    function armmove(event){
+    function armmove(posX, posY) {
+
       var cal = new calcul();
-      var res = cal.calculAllPoint(270,380,event.clientX-560,(event.clientY-71));
+      // var res = cal.calculAllPoint(10, 330, posX - 560,(posY - 71));
+      var res = cal.calculAllPoint(10, 330, posX - 270, posY - 50);
       var up = document.getElementById("upperarm");
       var knee = document.getElementById("knee");
       var fore = document.getElementById("forearm");
@@ -53,23 +53,31 @@
       fore.setAttribute("x2",res[2].x);
       fore.setAttribute("y2",res[2].y);
     }
+  
   </script>
 </head>
 <body onload="setup();rawr();">
-  <section onmousemove='armmove(event);'>
-  <h1 id="saart">Animation titanesque</h1>
-  <svg id="canvas" width="800" height="600">
+  <section >
+  <!-- <section>  -->
+    <h1 id="saart">Animation titanesque</h1>
+      
     <!-- Le canvas SVG -->
-    <rect x="0" y="0" width="800" height="600" fill="#7EC0EE" />
-    <g id="entity" transform="translate(270, 50)">
-      <use id="corps" xlink:href="assets/body.svg#corps" transform="translate(0, 250)"></use>
-      <use id="tete" xlink:href="assets/head.svg#tete" transform="translate(7)"></use>
-    </g>
-    <line id="upperarm" x1="270" y1="380" x2="370" y2="380" style="stroke:rgb(221,160,106);stroke-width:70"/>
-    <line id="forearm" x1="370" y1="435" x2="470" y2="380" style="stroke:rgb(221,160,106);stroke-width:70"/>
-    <circle cx="270" cy="380" r="35" style="fill:rgb(221,160,106);"/>
-    <circle id="knee" cx="270" cy="435" r="35" style="fill:rgb(221,160,106);"/>
-  </svg> 
+    <!-- <svg id="canvas" width="800" height="600" onmousemove='armmove(event.layerX, event.layerY);'> -->
+    <svg id="canvas" width="800" height="600">
+      <rect x="0" y="0" width="800" height="600" fill="#7EC0EE" />
+      
+      <!-- Le titan -->
+      <g id="entity-titan" transform="translate(270, 50)">
+        <use id="corps" xlink:href="assets/body.svg#corps" transform="translate(0, 250)"></use>
+        <use id="tete" xlink:href="assets/head.svg#tete" transform="translate(7)"></use>
+        
+        <!-- Le bras -->
+        <line id="upperarm" x1="10"   y1="330" x2="110" y2="120"  style="stroke:rgb(221,160,106);stroke-width:70"/>
+        <line id="forearm"  x1="110"  y1="435" x2="210" y2="380"  style="stroke:rgb(221,160,106);stroke-width:70"/>
+        <circle             cx="10"   cy="330" r="35"             style="fill:rgb(221,160,106);"/>
+        <circle id="knee"   cx="10"   cy="435" r="35"             style="fill:rgb(221,160,106);"/>
+      </g>
+    </svg> 
     <!-- Fin du canvas SVG -->
   
   </section>

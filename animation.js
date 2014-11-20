@@ -27,8 +27,25 @@ function initWorld(world)
   var entity = new Entity();
   entity.velocity.x = 0.1;
   entity.velocity.y = 0.1;
+  
+  entity.position.x = 50;
+  entity.position.y = 50;
 
   var test = world.addEntity(entity);  
+
+  
+  window.setInterval(function() {
+    armmove(entity.position.x, entity.position.y);
+  
+    if(entity.position.x > 750 || entity.position.x < 50) {
+      entity.velocity.x *= -1;
+    }
+
+    if(entity.position.y > 550 || entity.position.y < 50) {
+      entity.velocity.y *= -1;
+    }
+    
+  }, STEP_DURATION);
 }
 
 //----------------------------------------------------------------------------------
