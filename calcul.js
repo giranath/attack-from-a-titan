@@ -1,7 +1,8 @@
-function point(_x,_y)
+function point(_x,_y,_theta)
 {
   this.x = _x != undefined ? _x : 0;
   this.y = _y != undefined ? _y : 0;
+  this.theta = _theta != undefined ? _theta : 0;
 }
 
 function calcul()
@@ -35,9 +36,9 @@ function calcul()
       theta1 = theta2 = theta;
     }
    
-    var p0 = new point(x1,y1); 
-    var p1 = new point(x1 + (Math.cos(theta1)*self.upperarm_size), y1+(Math.sin(theta1)*self.upperarm_size));
-    var p2 = new point(p1.x + (Math.cos(theta2)*self.forearm_size), p1.y+(Math.sin(theta2)*self.forearm_size));
+    var p0 = new point(x1,y1,theta*(180/Math.PI)+90); 
+    var p1 = new point(x1 + (Math.cos(theta1)*self.upperarm_size), y1+(Math.sin(theta1)*self.upperarm_size),theta1);
+    var p2 = new point(p1.x + (Math.cos(theta2)*self.forearm_size), p1.y+(Math.sin(theta2)*self.forearm_size),theta2*(180/Math.PI)+90);
 
     return [p0, p1, p2];
   };

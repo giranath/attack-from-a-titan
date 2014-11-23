@@ -44,6 +44,7 @@
       var up = document.getElementById("upperarm");
       var knee = document.getElementById("knee");
       var fore = document.getElementById("forearm");
+      var hand =  document.getElementById("entity-main");
       up.setAttribute("x2",res[1].x);
       up.setAttribute("y2",res[1].y);
       knee.setAttribute("cx",res[1].x);
@@ -52,6 +53,7 @@
       fore.setAttribute("y1",res[1].y);
       fore.setAttribute("x2",res[2].x);
       fore.setAttribute("y2",res[2].y);
+      hand.setAttribute("transform","translate("+res[2].x+","+res[2].y+") rotate("+res[2].theta+")");
     }
   
   </script>
@@ -66,6 +68,7 @@
     <svg id="canvas" width="800" height="600">
       <rect x="0" y="0" width="800" height="600" fill="#7EC0EE" />
       
+
       <!-- Le titan -->
       <g id="entity-titan" transform="translate(270, 50)">
         <use id="corps" xlink:href="assets/body.svg#corps" transform="translate(0, 250)"></use>
@@ -76,7 +79,20 @@
         <line id="forearm"  x1="110"  y1="435" x2="210" y2="380"  style="stroke:rgb(221,160,106);stroke-width:70"/>
         <circle             cx="10"   cy="330" r="35"             style="fill:rgb(221,160,106);"/>
         <circle id="knee"   cx="10"   cy="435" r="35"             style="fill:rgb(221,160,106);"/>
+        <!-- La main -->
+        <g id="entity-main">
+          <circle r="40" cx="0" cy="0"/>
+          <ellipse cx="-15" cy="-47" rx="5" ry="20" fill="#FF0055"/>
+          <ellipse cx="-3" cy="-50" rx="5" ry="20" fill="#FF0055"/>
+          <ellipse cx="9" cy="-48" rx="5" ry="20" fill="#FF0055"/>
+          <ellipse cx="23" cy="-40" rx="5" ry="20" fill="#FF0055"/>
+          <ellipse cx="-30" cy="-30" rx="5" ry="20" fill="#FF0055"/>
+        </g>
       </g>
+
+
+
+
     </svg> 
     <!-- Fin du canvas SVG -->
   
