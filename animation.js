@@ -25,8 +25,8 @@ function initWorld(world)
  */
 {
   var entity = new Entity();
-  entity.velocity.x = 0.1;
-  entity.velocity.y = 0.1;
+  entity.velocity.x = 0.2;
+  entity.velocity.y = 0.2;
   
   entity.position.x = 50;
   entity.position.y = 50;
