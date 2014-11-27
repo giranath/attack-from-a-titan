@@ -19,30 +19,11 @@
   </style>
 
   <script type="application/javascript" src="calcul.js"></script>
+  <script type="application/javascript" src="Vector2.js"></script>
+  <script type="application/javascript" src="titan.js"></script>
   <script type="application/javascript" src="entity.js"></script>
   <script type="application/javascript" src="world.js"></script>
   <script type="application/javascript" src="animation.js"></script>
-  <script type="application/javascript">
-  
-    function armmove(posX, posY) {
-      var cal = new calcul();
-      var res = cal.calculAllPoint(10, 330, posX - 270, posY - 50);         
-      var up = document.getElementById("upperarm");
-      var elbow = document.getElementById("elbow");
-      var fore = document.getElementById("forearm");
-      var hand =  document.getElementById("entity-main");
-      up.setAttribute("x2",res[1].x);
-      up.setAttribute("y2",res[1].y);
-      elbow.setAttribute("cx",res[1].x);
-      elbow.setAttribute("cy",res[1].y);
-      fore.setAttribute("x1",res[1].x);
-      fore.setAttribute("y1",res[1].y);
-      fore.setAttribute("x2",res[2].x);
-      fore.setAttribute("y2",res[2].y);
-      hand.setAttribute("transform","translate("+res[2].x+","+res[2].y+") rotate("+res[2].theta+")");
-    }
-  
-  </script>
 </head>
 <body onload="setup();">
   <section >
@@ -63,6 +44,7 @@
       <!-- Le mur -->
       <rect x="0" y="500" width="800" height="100" style="fill:rgb(158, 158, 158);"/>
       <rect x="0" y="580" width="800" height="20"  style="fill:rgb(120, 120, 120);"/>
+      
       <!-- Le bras -->
       <g id="bras" transform="translate(270, 50)">
         <line id="upperarm" x1="10"   y1="330" x2="110" y2="120"  style="stroke:rgb(221,160,106);stroke-width:70"/>

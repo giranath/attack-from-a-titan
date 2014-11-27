@@ -24,28 +24,18 @@ function initWorld(world)
  * @param world Le monde à initialiser
  */
 {
-  var entity = new Entity();
-  entity.velocity.x = 0.1;
-  entity.velocity.y = 0.1;
-  
-  entity.position.x = 50;
-  entity.position.y = 50;
+  var titan = new Titan("entity-titan");
+ 
+  var callback = function() {
+    var posX = Math.random() * 800;
+    var posY = Math.random() * 600;
 
-  var test = world.addEntity(entity);  
-
+    titan.move_arm_to_async(posX, posY, callback);
+  };
   
-  window.setInterval(function() {
-    armmove(entity.position.x, entity.position.y);
+  titan.move_arm_to_async(500, 500, callback); 
   
-    if(entity.position.x > 750 || entity.position.x < 50) {
-      entity.velocity.x *= -1;
-    }
-
-    if(entity.position.y > 550 || entity.position.y < 50) {
-      entity.velocity.y *= -1;
-    }
-    
-  }, STEP_DURATION);
+  var test = world.addEntity(titan);
 }
 
 //----------------------------------------------------------------------------------
