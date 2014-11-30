@@ -18,9 +18,31 @@
 
   </style>
 
+  <script type="application/javascript">
+    // Insère un noeud avant un autre
+    var insert_before = function(toInsert, reference) 
+    {
+      reference.parentNode.insertBefore(toInsert, reference);
+    }
+
+    // Insère un noeud après un autre
+    var insert_after = function(toInsert, target) 
+    {
+      var parentNode = target.parentNode;
+
+      if(parentNode.lastChild == target)
+      {
+        parentNode.appendChild(toInsert);
+      }
+      else 
+      {
+        parentNode.insertBefore(toInsert, target.nextSibling);
+      }
+    }
+  </script>
   <script type="application/javascript" src="calcul.js"></script>
   <script type="application/javascript" src="Vector2.js"></script>
-  <script type="application/javascript" src="titan.js"></script>
+  <script type="application/javascript" src="Titan.js"></script>
   <script type="application/javascript" src="entity.js"></script>
   <script type="application/javascript" src="world.js"></script>
   <script type="application/javascript" src="animation.js"></script>
@@ -34,38 +56,11 @@
     <svg id="canvas" width="800" height="600">
       <rect x="0" y="0" width="800" height="600" fill="#7EC0EE" />
       
-
-      <!-- Le titan -->
-      <g id="entity-titan" transform="translate(270, 50)">
-        <use id="corps" xlink:href="assets/body.svg#corps" transform="translate(0, 250)"></use>
-        <use id="tete" xlink:href="assets/head.svg#tete" transform="translate(7)"></use>
-      </g>  
-        
       <!-- Le mur -->
-      <rect x="0" y="500" width="800" height="100" style="fill:rgb(158, 158, 158);"/>
-      <rect x="0" y="580" width="800" height="20"  style="fill:rgb(120, 120, 120);"/>
-      
-      <!-- Le bras -->
-      <g id="bras" transform="translate(270, 50)">
-        <line id="upperarm" x1="10"   y1="330" x2="110" y2="120"  style="stroke:rgb(221,160,106);stroke-width:70"/>
-        <line id="forearm"  x1="110"  y1="435" x2="210" y2="380"  style="stroke:rgb(221,160,106);stroke-width:70"/>
-        <circle             cx="10"   cy="330" r="35"             style="fill:rgb(221,160,106);"/>
-        <circle id="elbow"  cx="10"   cy="435" r="35"             style="fill:rgb(221,160,106);"/>
-      
-        <!-- La main -->
-        <g id="entity-main" style="stroke:rgb(0,0,0)">
-          <ellipse rx="36" ry="40" cx="0" cy="0" style="fill:rgb(221,160,106);"/>
-          <ellipse cx="-15" cy="-47" rx="5" ry="20"  style="fill:rgb(221,160,106);"/>
-          <ellipse cx="-3" cy="-50" rx="5" ry="20" style="fill:rgb(221,160,106);"/>
-          <ellipse cx="9" cy="-48" rx="5" ry="20" style="fill:rgb(221,160,106);"/>
-          <ellipse cx="23" cy="-40" rx="5" ry="20" style="fill:rgb(221,160,106);"/>
-          <ellipse cx="-30" cy="-30" rx="5" ry="20" style="fill:rgb(221,160,106);"/>
-        </g>
-</g>
-
-
-
-
+      <g id="wall">
+        <rect x="0" y="500" width="800" height="100" style="fill:rgb(158, 158, 158);"/>
+        <rect x="0" y="580" width="800" height="20"  style="fill:rgb(120, 120, 120);"/>
+      </g>
     </svg> 
     <!-- Fin du canvas SVG -->
   

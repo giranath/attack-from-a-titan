@@ -94,9 +94,7 @@ World.prototype.draw = function()
   this.each(function(index, entite) 
   {
     var element = self.svg.getElementById("entity_" + index);
-    // element.setAttribute("cx", entite.position.x);
-    // element.setAttribute("cy", entite.position.y);
-    element.setAttribute("transform", "translate(" + entite.position.x + ", " + entite.position.y  + ")")
+    element.setAttribute("transform", "translate(" + entite.position.x + ", " + entite.position.y  + ")");
   });
 }
 
@@ -105,13 +103,31 @@ World.prototype.draw = function()
  * @param {Entity} entity - L'entité à ajouter
  * @return L'identifiant de l'entité
  */
-World.prototype.addEntity = function(entity)
+World.prototype.addEntity = function(entity, after_wall)
 {
-  var element = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  var is_after_wall = after_wall != undefined ? after_wall : true;
+   
+  var element = document.createElementNS("http://www.w3.org/2000/svg", "g");
   element.id = "entity_" + this.__autokey; 
-  element.setAttribute("r", "40");
+  
+  if(entity.onCreate != undefined) 
+  {
+    entity.onCreate(element);
+  }
 
-  this.svg.appendChild(element);
+  var wall = this.svg.getElementById("wall");
+
+  // On doit placer l'entité devant le mur
+  if(is_after_wall)
+  {
+    insert_after(element, wall);
+  }
+  // On doit placer l'entité derrière le mur
+  else 
+  {
+    insert_before(element, wall);
+  }
+  // this.svg.appendChild(element);
    
   this.entities.push(entity);
 
