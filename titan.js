@@ -146,7 +146,7 @@ function Titan(arm)
       moved_callback = function(){},
       moving = false;
 
-  this.speed = 0.12;
+  this.speed = 1.2;
   
   
   /**
