@@ -135,11 +135,19 @@ function Titan(arm)
 
   this.position = new Vector2(370, 50); // 270, 50
 
-  // La position où le titan dirige sa main
+  // Variables pour gérer le déplacement de la main 
   var target_position = new Vector2(0, 0),
-      moved_callback = function() {}, 
+      hand_moved_callback = function() {}, 
       hand_moving = false,
       arm_speed = 0.1; 
+
+  // Variable pour gérer le déplacement du titan
+  var move_to_position = new Vector2(0, 0),
+      moved_callback = function(){},
+      moving = false;
+
+  this.speed = 0.12;
+  
   
   /**
    * Déplace le bras du titan à une position
@@ -185,6 +193,27 @@ function Titan(arm)
     arm.position.x = this.position.x;
     arm.position.y = this.position.y;
 
+    if(moving)
+    {
+      var difference = vector_sub(move_to_position, this.position),
+          direction = difference.unit(),
+          deplacement = vector_mul(direction, this.speed);
+
+      if(difference.length() > deplacement.length())
+      {
+        this.position.x += deplacement.x;
+        this.position.y += deplacement.y;
+      }
+      else 
+      {
+        this.position.x = move_to_position.x;
+        this.position.y = move_to_position.y;
+
+        moving = false;
+        moved_callback(true);
+      }
+    }
+
     if(hand_moving) 
     {
       var difference = vector_sub(target_position, hand_position),
@@ -207,7 +236,7 @@ function Titan(arm)
         (direction.x == 0 && direction.y == 0)) 
       {
         hand_moving = false;
-        moved_callback();     
+        hand_moved_callback();     
       }
     }
   };
@@ -223,8 +252,23 @@ function Titan(arm)
     target_position.x = targetx;
     target_position.y = targety;     
      
-    moved_callback = cb;
+    hand_moved_callback = cb;
     hand_moving = true;
+  };
+
+  /**
+   * Déplace le titan à une endroit
+   * @param targetX la position où aller en X
+   * @param targetY La position en Y
+   * @param cb La fonction à appeler lorsque le déplacement est réalisé
+   */
+  this.go_to = function(targetX, targetY, cb)
+  {
+    move_to_position.x = targetX;
+    move_to_position.y = targetY;
+    
+    moving = true;
+    moved_callback = cb;
   };
 
 }

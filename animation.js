@@ -68,9 +68,19 @@ function initWorld(world)
           else 
           {
             // Personne n'est proche, le titan doit se cacher
-            titan_p.move_arm_to_async(titan_p.position.x + 10, 0, function() 
+            titan_p.move_arm_to_async(titan_p.position.x - 100, titan_p.position.y + 330, function() 
             {
-              // Entamer la descente 
+              var id = world.find(arm);
+
+              world.changeLayerOf(id, false);
+
+              titan_p.move_arm_to_async(titan_p.position.x + 10, 600, function()
+              {
+                titan_p.go_to(titan_p.position.x, 600, function()
+                {
+                  // Le titan est caché maintenant
+                });
+              });
             });
           }
         }
@@ -92,8 +102,11 @@ function initWorld(world)
           titan_p.move_arm_to_async(titan_p.position.x + 120, titan_p.position.y + 230, function() 
           {
             sounds.miam.play();
-
-            titan_callback(titan_p, "pick")();
+            
+            window.setTimeout(function()
+            {
+              titan_callback(titan_p, "pick")();
+            }, 1000);
           });
           titan_target = null;
         }

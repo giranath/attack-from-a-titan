@@ -136,6 +136,15 @@ World.prototype.draw = function()
   {
     var element = self.svg.getElementById("entity_" + index);
     element.setAttribute("transform", "translate(" + entite.position.x + ", " + entite.position.y  + ")");
+  
+    if(entite.visible != undefined && entite.visible == false)
+    {
+      element.setAttribute("visibility", "hidden");
+    }
+    else
+    {
+      element.setAttribute("visibility", "visible");
+    }
   });
 };
 
@@ -192,6 +201,24 @@ World.prototype.addEntity = function(entity, after_wall)
   this.entities.push(entity);
 
   return this.__autokey++;
+};
+
+// Change le layer d'un entité
+World.prototype.changeLayerOf = function(index, after_wall)
+{
+  var is_after_wall = after_wall != undefined ? after_wall : true;
+  
+  var wall = this.svg.getElementById("wall");
+  var element = this.svg.getElementById("entity_" + index);
+  
+  if(is_after_wall)
+  {
+    insert_after(element, wall);
+  }
+  else
+  {
+    insert_before(element, wall);
+  }
 };
 
 /**
