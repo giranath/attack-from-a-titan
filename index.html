@@ -18,34 +18,17 @@
 
   </style>
 
-  <script type="application/javascript">
-    // Insère un noeud avant un autre
-    var insert_before = function(toInsert, reference) 
-    {
-      reference.parentNode.insertBefore(toInsert, reference);
-    }
-
-    // Insère un noeud après un autre
-    var insert_after = function(toInsert, target) 
-    {
-      var parentNode = target.parentNode;
-
-      if(parentNode.lastChild == target)
-      {
-        parentNode.appendChild(toInsert);
-      }
-      else 
-      {
-        parentNode.insertBefore(toInsert, target.nextSibling);
-      }
-    }
-  </script>
-  <script type="application/javascript" src="calcul.js"></script>
+  <script type="application/javascript" src="Common.js"></script>
+    
+  <script type="application/javascript" src="Calcul.js"></script>
   <script type="application/javascript" src="Vector2.js"></script>
+  
+  <script type="application/javascript" src="Entity.js"></script>
   <script type="application/javascript" src="Titan.js"></script>
-  <script type="application/javascript" src="entity.js"></script>
-  <script type="application/javascript" src="world.js"></script>
-  <script type="application/javascript" src="animation.js"></script>
+  <script type="application/javascript" src="Human.js"></script>
+    
+  <script type="application/javascript" src="World.js"></script>
+  <script type="application/javascript" src="Animation.js"></script>
 </head>
 <body onload="setup();">
   <section >

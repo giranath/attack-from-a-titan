@@ -65,6 +65,47 @@ World.prototype.each = function(fn)
       fn(index, this.entities[index]);      // On appel la fonction en envoyant l'index de l'entité et l'entité
     }
   }
+};
+
+/**
+ * Retrouve tous les entité ayant un tag égal à celui passé en paramètre
+ */
+World.prototype.eachWithTag = function(tag, fn)
+{
+  for(var index = 0; index < this.entities.length; index++)
+  {
+    var entity = this.entities[index];
+    
+    if(entity && entity.tag != undefined && entity.tag == tag)
+    {
+      fn(index, entity);
+    }
+  }
+};
+
+/**
+ * Retourne l'entité le plus proche de celui passé en paramètre avec un tag particulier
+ * @param tag Le tag à rechercher
+ * @param entity L'entité pour lequel il faut retrouver le plus proche
+ * @return L'entité le plus proche ou null si aucun n'est trouvé 
+ */
+World.prototype.neirestWithTag = function(tag, entity)
+{
+  var neirest = null;
+  var minDist = 1000000;
+
+  this.eachWithTag(tag, function(index, f_entity) 
+  {
+    var distance = vector_sub(f_entity.position, entity.position).length();
+    
+    if(distance < minDist) 
+    {
+      neirest = f_entity;
+      minDist = distance;
+    }
+  });
+
+  return neirest;
 }
 
 /**
@@ -81,7 +122,7 @@ World.prototype.step = function(dt)
       entite.onUpdate(dt);
     }
   });
-}
+};
 
 /**
  * @brief Affiche l'état actuel du monde à l'écran
@@ -96,7 +137,27 @@ World.prototype.draw = function()
     var element = self.svg.getElementById("entity_" + index);
     element.setAttribute("transform", "translate(" + entite.position.x + ", " + entite.position.y  + ")");
   });
-}
+};
+
+/**
+ * @brief Cherche un entité pour récupérer son identifiant
+ * @param entity L'entité à rechercher
+ * @return -1 si non trouvé ou l'identifiant de l'entité
+ */
+World.prototype.find = function(entity)
+{
+  var id = -1;
+
+  this.each(function(index, it_entity)
+  {
+    if(entity == it_entity)
+    {
+      id = index;
+    }
+  });
+
+  return id;
+};
 
 /**
  * @brief Ajoute un entité au monde
@@ -127,12 +188,11 @@ World.prototype.addEntity = function(entity, after_wall)
   {
     insert_before(element, wall);
   }
-  // this.svg.appendChild(element);
    
   this.entities.push(entity);
 
   return this.__autokey++;
-}
+};
 
 /**
  * @brief Vérifie l'existence d'un entité
@@ -149,7 +209,7 @@ World.prototype.exists = function(id)
   }
   
   return exists;
-}
+};
 
 /**
  * @brief Retire un entité du monde
@@ -170,4 +230,4 @@ World.prototype.removeEntity = function(index)
   }
   
   return removed;
-}
+};

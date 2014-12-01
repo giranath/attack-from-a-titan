@@ -25,37 +25,77 @@ function initWorld(world)
  */
 {
   var arm = new TitanArm(),
-      titan = new Titan(arm),
-      arm2 = new TitanArm(),
-      titan2 = new Titan(arm2),
-      arm3 = new TitanArm(),
-      titan3 = new Titan(arm3);
+      titan = new Titan(arm);
 
-  titan2.position.x = 50;
-  titan3.position.x = 600;
- 
-  var titan_callback = function(titan_p)
+  titan.tag = "titan";
+  arm.tag = "arm";
+
+  
+  // Gestion du titan et de ses proies
+  var titan_target = null,
+      titan_callback = function(titan_p, action)
   {
-    return function() {
-      var posX = Math.random() * 800;
-      var posY = Math.random() * 100 + 500;
 
-      titan_p.move_arm_to_async(posX, posY, titan_callback(titan_p));
-    };
+    if(action == "pick")
+    {
+      // Le titan choisi l'humain le plus proche de lui
+      return function() 
+      {
+        var posX = Math.random() * 800;
+        var posY = Math.random() * 100 + 500;
+     
+        // Le titan dirige son bras vers l'humain le plus près
+        titan_target = world.neirestWithTag("human", titan);
+
+        if(titan_target != null)
+        {
+          titan_target.state = HUMAN_STATES.FROZEN;
+        
+          titan_p.move_arm_to_async(titan_target.position.x, titan_target.position.y, titan_callback(titan_p, "eat"));
+        }
+      };
+    }
+
+    // Le titan déplace sa main vers sa bouche
+    else if(action == "eat")
+    {
+      return function() 
+      {
+        if(titan_target != null)
+        {
+          world.removeEntity(world.find(titan_target));
+          titan_p.move_arm_to_async(titan_p.position.x + 120, titan_p.position.y + 230, titan_callback(titan_p, "pick"));
+        
+          titan_target = null;
+        }
+      };
+    }
   };
  
-  titan.move_arm_to_async(500, 500, titan_callback(titan)); 
-  titan2.move_arm_to_async(400, 400, titan_callback(titan2)); 
-  titan3.move_arm_to_async(400, 400, titan_callback(titan3)); 
+  titan.move_arm_to_async(500, 500, titan_callback(titan, "pick")); 
+ 
+  // Ajout du titan dans le monde 
+  world.addEntity(titan, false);
   
-  var test = world.addEntity(titan, false);
+  // Ajout du bras dans le monde
   world.addEntity(arm, true);
-
-  world.addEntity(titan2, false);
-  world.addEntity(arm2, true);
   
-  world.addEntity(titan3, false);
-  world.addEntity(arm3, true);
+  // On spawn 20 humains
+  for(var i = 0; i < 20; i++)
+  {
+    var human = new Human();
+    human.position.x = Math.random() * 800;
+    human.position.y = (Math.random() * 30) + 510;
+    human.speed = Math.random() * 10;
+    human.tag = "human";
+  
+    human.go_to(Math.random() * 800, (Math.random() * 30) + 510, function(succeed)
+    {
+      // Quoi faire lorque l'humain s'est déplacé 
+    });
+
+    world.addEntity(human, true);
+  }
 }
 
 //----------------------------------------------------------------------------------
