@@ -28,7 +28,11 @@ function initWorld(world)
       titan = new Titan(arm);
 
   titan.tag = "titan";
+  titan.position.y = 600;
+  titan.move_arm_to(0, 800);
+
   arm.tag = "arm";
+
 
   var sounds = {
     miam : new Audio("assets/sounds/miam.wav"),
@@ -59,7 +63,7 @@ function initWorld(world)
           var distance = vector_sub(titan_target.position, vector_add(titan_p.position, new Vector2(10, 330))).length();
 
           // Si l'humain n'est pas trop loin
-          if(distance <= 300)
+          if(distance <= 250)
           {
             titan_target.state = HUMAN_STATES.FROZEN;
         
@@ -71,17 +75,26 @@ function initWorld(world)
             titan_p.move_arm_to_async(titan_p.position.x - 100, titan_p.position.y + 330, function() 
             {
               var id = world.find(arm);
-
               world.changeLayerOf(id, false);
 
               titan_p.move_arm_to_async(titan_p.position.x + 10, 600, function()
               {
                 titan_p.go_to(titan_p.position.x, 600, function()
                 {
+                  world.eachWithTag("human", function(index, entity)
+                  {
+                    entity.go_to(Math.random() * 800, Math.random() * 30 + 520, function()
+                    {
+                    });
+                  });
+                  
                   // Le titan réapparait pour attraper plus de personnes
                   window.setTimeout(function() 
                   {
-                    titan_p.go_to(titan_p.position.x, 0, titan_callback(titan_p, "pick"));
+                    titan_p.go_to(titan_p.position.x, 0, function(){
+                      world.changeLayerOf(id, true);
+                      titan_callback(titan_p, "pick")();
+                    });
                   }, Math.random() * 5000);
                 });
               });
@@ -118,13 +131,26 @@ function initWorld(world)
     }
   };
  
-  titan.move_arm_to_async(500, 500, titan_callback(titan, "pick")); 
- 
+  // titan.move_arm_to_async(500, 500, titan_callback(titan, "pick")); 
+  window.setTimeout(function()
+  {
+    titan.go_to(titan.position.x, 0, function() 
+    {
+      window.setTimeout(function() 
+      {
+        var id = world.find(arm);
+        world.changeLayerOf(id, true);
+        
+        titan_callback(titan, "pick")();
+      }, 1000);
+    });
+  }, 5000);
+
   // Ajout du titan dans le monde 
   world.addEntity(titan, false);
   
   // Ajout du bras dans le monde
-  world.addEntity(arm, true);
+  world.addEntity(arm, false);
   
   // On spawn 20 humains
   for(var i = 0; i < 20; i++)

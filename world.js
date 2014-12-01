@@ -213,7 +213,8 @@ World.prototype.changeLayerOf = function(index, after_wall)
   
   if(is_after_wall)
   {
-    insert_after(element, wall);
+    //insert_after(element, wall);
+    this.svg.appendChild(element);  
   }
   else
   {
