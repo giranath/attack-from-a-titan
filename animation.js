@@ -78,7 +78,11 @@ function initWorld(world)
               {
                 titan_p.go_to(titan_p.position.x, 600, function()
                 {
-                  // Le titan est caché maintenant
+                  // Le titan réapparait pour attraper plus de personnes
+                  window.setTimeout(function() 
+                  {
+                    titan_p.go_to(titan_p.position.x, 0, titan_callback(titan_p, "pick"));
+                  }, Math.random() * 5000);
                 });
               });
             });
