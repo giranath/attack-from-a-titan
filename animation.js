@@ -30,7 +30,14 @@ function initWorld(world)
   titan.tag = "titan";
   arm.tag = "arm";
 
-  
+  var sounds = {
+    miam : new Audio("assets/sounds/miam.wav"),
+    background : new Audio("assets/sounds/guren_no_yumiya.mp3")
+  };
+
+  sounds.background.volume = 0.4;
+  sounds.background.play();
+
   // Gestion du titan et de ses proies
   var titan_target = null,
       titan_callback = function(titan_p, action)
@@ -49,9 +56,27 @@ function initWorld(world)
 
         if(titan_target != null)
         {
-          titan_target.state = HUMAN_STATES.FROZEN;
+          var distance = vector_sub(titan_target.position, vector_add(titan_p.position, new Vector2(10, 330))).length();
+
+          // Si l'humain n'est pas trop loin
+          if(distance <= 300)
+          {
+            titan_target.state = HUMAN_STATES.FROZEN;
         
-          titan_p.move_arm_to_async(titan_target.position.x, titan_target.position.y, titan_callback(titan_p, "eat"));
+            titan_p.move_arm_to_async(titan_target.position.x, titan_target.position.y, titan_callback(titan_p, "eat"));
+          }
+          else 
+          {
+            // Personne n'est proche, le titan doit se cacher
+            titan_p.move_arm_to_async(titan_p.position.x + 10, 0, function() 
+            {
+              // Entamer la descente 
+            });
+          }
+        }
+        else
+        {
+          // Le titan a mangé toute l'humanité!
         }
       };
     }
@@ -64,8 +89,12 @@ function initWorld(world)
         if(titan_target != null)
         {
           world.removeEntity(world.find(titan_target));
-          titan_p.move_arm_to_async(titan_p.position.x + 120, titan_p.position.y + 230, titan_callback(titan_p, "pick"));
-        
+          titan_p.move_arm_to_async(titan_p.position.x + 120, titan_p.position.y + 230, function() 
+          {
+            sounds.miam.play();
+
+            titan_callback(titan_p, "pick")();
+          });
           titan_target = null;
         }
       };

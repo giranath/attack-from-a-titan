@@ -139,7 +139,7 @@ function Titan(arm)
   var target_position = new Vector2(0, 0),
       moved_callback = function() {}, 
       hand_moving = false,
-      arm_speed = 0.1;
+      arm_speed = 0.1; 
   
   /**
    * Déplace le bras du titan à une position
