@@ -132,6 +132,7 @@ function Titan(arm)
 {
   // La position de la main du titan
   var hand_position = new Vector2(100, 500);
+  var mouth = null;
 
   this.position = new Vector2(370, 50); // 270, 50
 
@@ -147,7 +148,11 @@ function Titan(arm)
       moving = false;
 
   this.speed = 1.2;
-  
+
+  this.getArm = function() 
+  {
+    return arm;
+  };
   
   /**
    * Déplace le bras du titan à une position
@@ -171,10 +176,19 @@ function Titan(arm)
    */
   this.onCreate = function(parentElement) 
   {
+    var head_group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    head_group.setAttribute("transform", "translate(7)"); 
+
     var head = document.createElementNS("http://www.w3.org/2000/svg", "use");
     head.setAttribute("name", "head");
-    head.setAttributeNS("http://www.w3.org/1999/xlink", "href", "assets/head.svg#tete");
-    head.setAttribute("transform", "translate(7)"); 
+    head.setAttributeNS("http://www.w3.org/1999/xlink", "href", "assets/head.svg#crane");
+
+    mouth = document.createElementNS("http://www.w3.org/2000/svg", "use"); 
+    mouth.setAttribute("name", "head");
+    mouth.setAttributeNS("http://www.w3.org/1999/xlink", "href", "assets/head.svg#bouche");
+    
+    head_group.appendChild(head);
+    head_group.appendChild(mouth);
     
     var body = document.createElementNS("http://www.w3.org/2000/svg", "use");
     head.setAttribute("name", "body");
@@ -182,7 +196,7 @@ function Titan(arm)
     body.setAttribute("transform", "translate(0, 250)"); 
 
     parentElement.appendChild(body);
-    parentElement.appendChild(head);
+    parentElement.appendChild(head_group);
   }
 
   /**
