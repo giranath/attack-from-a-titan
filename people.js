@@ -7,6 +7,6 @@ function people(id)
 
   this.movearm = function() {
     var vitesse = 0.1;
-
+    var lx;
   }
 }
