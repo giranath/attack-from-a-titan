@@ -33,12 +33,13 @@ function initWorld(world)
 
   arm.tag = "arm";
 
-
+  // Définition des sons
   var sounds = {
     miam : new Audio("assets/sounds/miam.wav"),
     background : new Audio("assets/sounds/guren_no_yumiya.mp3")
   };
 
+  // On joue la musique de fond
   sounds.background.volume = 0.4;
   sounds.background.play();
 
@@ -62,7 +63,7 @@ function initWorld(world)
         {
           var distance = vector_sub(titan_target.position, vector_add(titan_p.position, new Vector2(10, 330))).length();
 
-          // Si l'humain n'est pas trop loin
+          // Si l'humain n'est pas trop loin il le mange 
           if(distance <= 250)
           {
             titan_target.state = HUMAN_STATES.FROZEN;
@@ -74,17 +75,19 @@ function initWorld(world)
             // Personne n'est proche, le titan doit se cacher
             titan_p.move_arm_to_async(titan_p.position.x, titan_p.position.y + 330, function() 
             {
-              var id = world.find(arm);
+              var id = world.find(titan_p.getArm());
               world.changeLayerOf(id, false);
 
               titan_p.move_arm_to_async(titan_p.position.x + 10, 600, function()
               {
                 titan_p.go_to(titan_p.position.x, 600, function()
                 {
+                  // Le titan est caché
                   world.eachWithTag("human", function(index, entity)
                   {
                     entity.go_to(Math.random() * 800, Math.random() * 30 + 520, function()
                     {
+                      
                     });
                   });
                   
@@ -131,14 +134,13 @@ function initWorld(world)
     }
   };
  
-  // titan.move_arm_to_async(500, 500, titan_callback(titan, "pick")); 
   window.setTimeout(function()
   {
     titan.go_to(titan.position.x, 0, function() 
     {
       window.setTimeout(function() 
       {
-        var id = world.find(arm);
+        var id = world.find(titan.getArm());
         world.changeLayerOf(id, true);
         
         titan_callback(titan, "pick")();
@@ -177,11 +179,10 @@ function setup()
  * @brief Met en place les éléments nécéssaire au bon fonctionnement de l'application
  */
 {
-
   var world = new World("canvas");         // On s'instancie un monde
  
   // Définition de la boucle principale 
-  window.setInterval(function()         // On met à jour le monde toutes les 16 ms
+  window.setInterval(function()            // On met à jour le monde toutes les 16 ms
   {
     world.step(STEP_DURATION);
     world.draw();
