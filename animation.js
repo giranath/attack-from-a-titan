@@ -72,7 +72,7 @@ function initWorld(world)
           else 
           {
             // Personne n'est proche, le titan doit se cacher
-            titan_p.move_arm_to_async(titan_p.position.x - 100, titan_p.position.y + 330, function() 
+            titan_p.move_arm_to_async(titan_p.position.x, titan_p.position.y + 330, function() 
             {
               var id = world.find(arm);
               world.changeLayerOf(id, false);
