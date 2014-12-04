@@ -49,13 +49,13 @@ function Human()
     //circle.setAttribute("rx", "10");
     //circle.setAttribute("ry", "30");
     //element.appendChild(circle);
-    var r = Math.round((Math.random() * 15) * (255/14));
-    var g = Math.round((Math.random() * 15) * (255/14));
-    var b = Math.round((Math.random() * 15) * (255/14));
+    var r = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
+    var g = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
+    var b = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
     var str = r.toString()+","+g.toString()+","+b.toString();
     var people = document.createElementNS("http://www.w3.org/2000/svg", "use");
     people.setAttributeNS("http://www.w3.org/1999/xlink", "href","assets/people.svg#little_pepole" );
-    people.setAttribute("style", "fill:rgb("+str+");");
+    people.setAttribute("style", "fill:rgb("+str+");stroke:rgb(0,0,0);");
     //debugger;
     element.appendChild(people);
   }
