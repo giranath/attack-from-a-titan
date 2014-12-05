@@ -29,7 +29,7 @@ function initWorld(world)
 
   titan.tag = "titan";
   titan.position.y = 600;
-  titan.move_arm_to(0, 800);
+  // titan.move_arm_to(titan.position.x, 900);
 
   arm.tag = "arm";
 
@@ -53,9 +53,6 @@ function initWorld(world)
       // Le titan choisi l'humain le plus proche de lui
       return function() 
       {
-        var posX = Math.random() * 800;
-        var posY = Math.random() * 100 + 500;
-     
         // Le titan dirige son bras vers l'humain le plus près
         titan_target = world.neirestWithTag("human", titan);
 
@@ -73,12 +70,12 @@ function initWorld(world)
           else 
           {
             // Personne n'est proche, le titan doit se cacher
-            titan_p.move_arm_to_async(titan_p.position.x, titan_p.position.y + 330, function() 
+            titan_p.move_arm_to_async(titan_p.position.x, titan_p.position.y + 430, function() 
             {
               var id = world.find(titan_p.getArm());
               world.changeLayerOf(id, false);
 
-              titan_p.move_arm_to_async(titan_p.position.x + 10, 600, function()
+              titan_p.move_arm_to_async(titan_p.position.x - 20, 600, function()
               {
                 titan_p.go_to(titan_p.position.x, 600, function()
                 {
@@ -95,8 +92,11 @@ function initWorld(world)
                   window.setTimeout(function() 
                   {
                     titan_p.go_to(titan_p.position.x, 0, function(){
-                      world.changeLayerOf(id, true);
-                      titan_callback(titan_p, "pick")();
+                      titan_p.move_arm_to_async(titan_p.position.x, titan_p.position.y + 430, function() 
+                      {
+                        world.changeLayerOf(id, true);
+                        titan_callback(titan_p, "pick")();
+                      });
                     });
                   }, Math.random() * 5000);
                 });
@@ -107,6 +107,7 @@ function initWorld(world)
         else
         {
           // Le titan a mangé toute l'humanité!
+           
         }
       };
     }
@@ -133,21 +134,24 @@ function initWorld(world)
       };
     }
   };
- 
+
+  // Gestion de l'introduction
   window.setTimeout(function()
   {
-    titan.go_to(titan.position.x, 0, function() 
-    {
-      window.setTimeout(function() 
+    titan.move_arm_to_async(titan.position.x - 260, 430, function() {
+      titan.go_to(titan.position.x, 0, function() 
       {
-        var id = world.find(titan.getArm());
-        world.changeLayerOf(id, true);
+        window.setTimeout(function() 
+        {
+          var id = world.find(titan.getArm());
+          world.changeLayerOf(id, true);
         
-        titan_callback(titan, "pick")();
-      }, 1000);
-    });
-  }, 5000);
-
+          titan_callback(titan, "pick")();
+        }, 1000);
+      });
+    }, 5000);
+  });
+  
   // Ajout du titan dans le monde 
   world.addEntity(titan, false);
   
