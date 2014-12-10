@@ -198,12 +198,39 @@ function Titan(arm)
     parentElement.appendChild(body);
     parentElement.appendChild(head_group);
   }
-
+  
   /**
    * Met à jour l'entité
    */
   this.onUpdate = function(dt) 
   {
+    var self = this;
+    var sync_arm = function()
+    {
+      var difference = vector_sub(target_position, hand_position),
+          direction = difference.unit(),
+          displacement = vector_mul(direction, dt * arm_speed); 
+
+      if(difference.length() >= displacement.length())
+      {
+        hand_position = vector_add(hand_position, displacement);      
+      }
+      else 
+      {
+        hand_position.x = target_position.x;
+        hand_position.y = target_position.y;
+      }
+
+      self.move_arm_to(hand_position.x, hand_position.y);
+    
+      if((hand_position.x == target_position.x && hand_position.y == target_position.y) || 
+        (direction.x == 0 && direction.y == 0)) 
+      {
+        hand_moving = false;
+        hand_moved_callback();     
+      }
+    };
+
     arm.position.x = this.position.x;
     arm.position.y = this.position.y;
 
@@ -226,32 +253,13 @@ function Titan(arm)
         moving = false;
         moved_callback(true);
       }
+
+      self.move_arm_to(hand_position.x, hand_position.y);
     }
 
     if(hand_moving) 
     {
-      var difference = vector_sub(target_position, hand_position),
-          direction = difference.unit(),
-          displacement = vector_mul(direction, dt * arm_speed); 
-
-      if(difference.length() >= displacement.length())
-      {
-        hand_position = vector_add(hand_position, displacement);      
-      }
-      else 
-      {
-        hand_position.x = target_position.x;
-        hand_position.y = target_position.y;
-      }
-
-      this.move_arm_to(hand_position.x, hand_position.y);
-    
-      if((hand_position.x == target_position.x && hand_position.y == target_position.y) || 
-        (direction.x == 0 && direction.y == 0)) 
-      {
-        hand_moving = false;
-        hand_moved_callback();     
-      }
+      sync_arm(); 
     }
   };
 
