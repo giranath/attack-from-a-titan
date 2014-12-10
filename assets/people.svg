@@ -2,10 +2,20 @@
   <g id="little_pepole">
     <circle name="head" r="10" cx="0" cy="-27"/>
     <circle name="body" r="20" cx="0" cy="3"/>
-    <circle name="lefthand" r="5" cx="-25" cy="-7"/>
-    <circle name="righthand" r="5" cx="25" cy="13"/>
+    <circle name="lefthand" r="5" cx="-25" cy="-7">
+      <animateMotion
+        path="M-25,-7
+              A25, 25 0 0,0 -25,13"
+        begin="0s" dur="1s" repeatCount="indefinite" rotate="auto"
+              />
+    </circle>
+    <circle name="righthand" r="5" cx="25" cy="13">
+      <animateMotion 
+        path="M0,0
+              L0,-40"
+        begin="0" dur="2s" repeatCount="indefinite" rotate="auto"/>
+    </circle>
     <circle name="leftfoot" r="7" cx="-20" cy="28"/>
     <circle name="rightfoot" r="7" cx="17" cy="28"/>
-
   </g>
 </svg>

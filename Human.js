@@ -95,6 +95,37 @@ function Human()
       case HUMAN_STATES.HIDING:
         // Lancer la procédure pour se cacher 
         
+        var PanicSide = 1;
+
+        if(Math.random() % 2)
+        {
+          PanicSide = PanicSide * -1;
+        }
+        if(walking)
+        {
+          var difference = vector_sub(target, this.position),
+              direction = difference.unit(),
+              deplacement = vector_mul(direction, this.speed);
+
+          if(difference.length() > deplacement.length())
+          {
+            this.position.x += deplacement.x;
+            this.position.y += deplacement.y;
+          }
+          else 
+          {
+            this.position.x = target.x;
+            this.position.y = target.y;
+
+            walking = false;
+            walked_cb(true);
+          }
+        }
+        else
+        {
+          go_to(0,0,function(){alert('lol');});
+        }
+
         break;
       case HUMAN_STATES.FROZEN:
         if(walking)

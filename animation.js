@@ -40,8 +40,8 @@ function initWorld(world)
   };
 
   // On joue la musique de fond
-  sounds.background.volume = 0.4;
-  sounds.background.play();
+  //sounds.background.volume = 0.4;
+  //sounds.background.play();
 
   // Gestion du titan et de ses proies
   var titan_target = null,
