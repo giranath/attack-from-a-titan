@@ -14,16 +14,30 @@ var STEP_DURATION = 50,
     TITAN_UP_SPEED = 2.2,
     TITAN_DOWN_SPEED = 1.2;
 
+
+//==================================================================================
+// GLOBALES 
+//==================================================================================
+// Définition des sons
+var sounds = {
+  miam : new Audio("assets/sounds/miam.wav"),
+  background : new Audio("assets/sounds/guren_no_yumiya.mp3")
+};
+
 //==================================================================================
 // PROGRAMME PRINCIPAL 
 //==================================================================================
 
 
-function createHuman(posx, posy,world)
+/**
+ * Crée un humain dans le monde
+ * @param posx La position en x
+ * @param posy La position en y
+ * @param world Le monde dans lequel créé l'humain
+ */
+function createHuman(posx, posy, world)
 {
     var human = new Human();
- //   human.position.x = Math.random() * 800;
- //   human.position.y = (Math.random() * 30) + 510;
     human.position.x = posx;
     human.position.y = posy;
     human.speed = Math.random() * 10;
@@ -51,19 +65,11 @@ function initWorld(world)
 
   titan.tag = "titan";
   titan.position.y = 600;
-  // titan.move_arm_to(titan.position.x, 900);
 
   arm.tag = "arm";
 
-  // Définition des sons
-  var sounds = {
-    miam : new Audio("assets/sounds/miam.wav"),
-    background : new Audio("assets/sounds/guren_no_yumiya.mp3")
-  };
-
   // On joue la musique de fond
   sounds.background.volume = 0.4;
-  // sounds.background.play();
 
   // Gestion du titan et de ses proies
   var titan_target = null,
