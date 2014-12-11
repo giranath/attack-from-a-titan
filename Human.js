@@ -70,8 +70,22 @@ function Human()
     var b = Math.round((Math.random() * COLOUR_VARIETY) * (255 / COLOUR_VARIETY - 1));
     var str = r.toString() + "," + g.toString() + "," + b.toString();
     var people = document.createElementNS("http://www.w3.org/2000/svg", "use");
-    people.setAttributeNS("http://www.w3.org/1999/xlink", "href","assets/people.svg#little_pepole" );
-    people.setAttribute("style", "fill:rgb(" + str + ");stroke:rgb(0,0,0);");
+    var r = Math.random() * 3;
+
+    if(r<1)
+    {
+      people.setAttributeNS("http://www.w3.org/1999/xlink", "href","assets/people.svg#little_pepole" );
+    }
+    else if(r < 2)
+    {
+      people.setAttributeNS("http://www.w3.org/1999/xlink", "href","assets/people1.svg#little_pepole" );
+    }
+    else
+    {
+      people.setAttributeNS("http://www.w3.org/1999/xlink", "href","assets/people2.svg#little_pepole" );
+    }
+    people.setAttribute("style", "fill:rgb("+str+");stroke:rgb(0,0,0);");
+    //debugger;
     element.appendChild(people);
   }
 

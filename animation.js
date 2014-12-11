@@ -18,6 +18,26 @@ var STEP_DURATION = 50,
 // PROGRAMME PRINCIPAL 
 //==================================================================================
 
+
+function createHuman(posx, posy,world)
+{
+    var human = new Human();
+ //   human.position.x = Math.random() * 800;
+ //   human.position.y = (Math.random() * 30) + 510;
+    human.position.x = posx;
+    human.position.y = posy;
+    human.speed = Math.random() * 10;
+    human.tag = "human";
+  
+    human.go_to(Math.random() * 800, (Math.random() * 30) + 510, function(succeed)
+    {
+      // Quoi faire lorque l'humain s'est déplacé 
+    });
+
+    world.addEntity(human, true);
+}
+
+
 //----------------------------------------------------------------------------------
 function initWorld(world) 
 //----------------------------------------------------------------------------------
@@ -228,20 +248,9 @@ function initWorld(world)
   world.addEntity(arm, false);
   
   // On spawn 20 humains
-  for(var i = 0; i < 20; i++)
+  for(var i = 0; i < 18; i++)
   {
-    var human = new Human();
-    human.position.x = Math.random() * 800;
-    human.position.y = 540 - i * 2.6;
-    human.speed = Math.random() * 10;
-    human.tag = "human";
-  
-    human.go_to(Math.random() * 800, human.position.y, function(succeed)
-    {
-      // Quoi faire lorque l'humain s'est déplacé 
-    });
-
-    world.addEntity(human, true);
+    createHuman(Math.random() * 800,(Math.random() * 30) + 510, world);
   }
 }
 
@@ -252,7 +261,7 @@ function setup()
  * @brief Met en place les éléments nécéssaire au bon fonctionnement de l'application
  */
 {
-  var world = new World("canvas");         // On s'instancie un monde
+  var world = new World("canvas");         // on s'instancie un monde
  
   // Définition de la boucle principale 
   window.setInterval(function()            // On met à jour le monde toutes les 16 ms
