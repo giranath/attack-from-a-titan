@@ -170,6 +170,44 @@ function Titan(arm)
 
     arm.handAngle = res[2].theta;
   };
+  
+  /**
+  * Déplace la bouche du titan (manger)
+  */
+  this.manger = function()
+  {
+    var animation = document.getElementById("animation_bouche");
+    
+    if(animation == null)
+    {
+      var ani = document.createElementNS("http://www.w3.org/2000/svg","animateMotion");
+      ani.setAttribute("path", "m" + "0,0"
+                                   + " v0,10"
+                                   + " l-25,-10 l25,5 l25,-5 l-25,0");
+      ani.setAttribute("dur", "0.5s");
+      ani.setAttribute("repeatCount", "2");
+      ani.setAttribute("id", "animation_bouche");
+      mouth.appendChild(ani);
+      
+      var rotateBouche = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
+      rotateBouche.setAttribute("attributeName", "transform");
+      rotateBouche.setAttribute("attributeType", "XML");
+      rotateBouche.setAttribute("type", "rotate");
+      rotateBouche.setAttribute("from", "0 " + mouth.getBBox().width/2 + " " + mouth.getBBox().height/2 + "\"");
+      rotateBouche.setAttribute("to", "90 " + mouth.getBBox().width/2 + " " + mouth.getBBox().height/2 + "\"");
+      rotateBouche.setAttribute("begin", "animation_bouche.begin");
+      rotateBouche.setAttribute("dur", "5s");
+      rotateBouche.setAttribute("repeatCount", "1");
+      
+      mouth.appendChild(rotateBouche);
+        
+      ani.beginElement();
+    }
+    else
+    {
+      animation.beginElement();
+    }
+  }
 
   /**
    * Quoi faire à la création de l'entité
