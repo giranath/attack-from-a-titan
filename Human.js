@@ -1,3 +1,11 @@
+//==================================================================================
+// FICHIER: animation.js
+// AUTEUR : Nathan Giraldeau & Luc Bossé
+// DATE   : 12 novembre 2014
+//----------------------------------------------------------------------------------
+// DESCIPTION:
+// Représente un être humain (Son affichage + logique) 
+//==================================================================================
 var HUMAN_STATES = {
   CALM : 0,
   HIDING : 1,
@@ -76,11 +84,12 @@ function Human()
     var self = this;
 
     // Pour éviter la répétion de code 
-    var move_sequence = function()
+    var move_sequence = function(speed_modifier)
     {
       var difference = vector_sub(target, self.position),
           direction = difference.unit(),
-          deplacement = vector_mul(direction, self.speed);
+          speed_modif = speed_modifier ? speed_modifier : 1,
+          deplacement = vector_mul(direction, self.speed * speed_modif);
 
       if(difference.length() > deplacement.length())
       {
@@ -138,7 +147,7 @@ function Human()
       case HUMAN_STATES.PANIC:
         if(walking)
         {
-          move_sequence();
+          move_sequence(1.5);
         }
         else
         {
@@ -175,7 +184,10 @@ function Human()
           // Les humains se rassemble sur le mur
           this.go_to(Math.random() * 800, this.position.y, function()
           {
-            this.state = HUMAN_STATES.CALM;
+            if(this.state == HUMAN_STATES.SECURED)
+            {
+              this.state = HUMAN_STATES.CALM;
+            }
           });
         }
         break;
