@@ -161,6 +161,7 @@ function initWorld(world)
           world.removeEntity(world.find(titan_target));
           titan_p.move_arm_to_async(titan_p.position.x + 120, titan_p.position.y + 230, function() 
           {
+            titan_p.manger();
             sounds.miam.play();
             
             window.setTimeout(function()
