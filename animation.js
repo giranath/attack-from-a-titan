@@ -26,7 +26,7 @@ function createHuman(posx, posy,world)
  //   human.position.y = (Math.random() * 30) + 510;
     human.position.x = posx;
     human.position.y = posy;
-    human.speed = Math.random() * 10;
+    human.speed = Math.random() * 7 + 3;
     human.tag = "human";
   
     human.go_to(Math.random() * 800, (Math.random() * 30) + 510, function(succeed)
@@ -62,7 +62,7 @@ function initWorld(world)
   };
 
   // On joue la musique de fond
-  //sounds.background.volume = 0.4;
+  sounds.background.volume = 0.4;
   //sounds.background.play();
 
   // Gestion du titan et de ses proies
@@ -147,7 +147,10 @@ function initWorld(world)
         else
         {
           // Le titan a mangé toute l'humanité!
-          createHuman(-50,(Math.random() * 30) + 510,world)
+          for(var i = 0; i < 10; i++)
+          {
+            createHuman((Math.random() < 0.5) ? -50 : 850,(Math.random() * 30) + 510,world)
+          }
         }
       };
     }
@@ -219,7 +222,7 @@ function initWorld(world)
   world.addEntity(arm, false);
   
   // On spawn 20 humains
-  for(var i = 0; i < 18; i++)
+  for(var i = 0; i < 1; i++)
   {
     createHuman(Math.random() * 800,(Math.random() * 30) + 510, world);
   }
