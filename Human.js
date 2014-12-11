@@ -2,6 +2,8 @@ var HUMAN_STATES = {
   CALM : 0,
   HIDING : 1,
   FROZEN : 2,
+  SECURED : 3,
+  PANIC : 4
 };
 
 var COLOUR_VARIETY = 15;
@@ -19,6 +21,8 @@ function Human()
       walking = false,
       walked_cb = function(){};
   
+  var hidden = false;
+
   /**
    * Déplace le personnage vers une position précise
    * @param targetX  La position X à atteindre
@@ -30,7 +34,15 @@ function Human()
     target.x = targetX;
     target.y = targetY;
     walking = true;
-    walked_cb = cb;
+    
+    if(cb != null || cb != undefined)
+    {
+      walked_cb = cb;
+    }
+    else 
+    {
+      walked_cb = function(){};
+    }
   };
 
   // Annule le déplacement de l'entité
@@ -45,10 +57,6 @@ function Human()
    */
   this.onCreate = function(element)
   {
-    //var circle = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
-    //circle.setAttribute("rx", "10");
-    //circle.setAttribute("ry", "30");
-    //element.appendChild(circle);
     var r = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
     var g = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
     var b = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
@@ -69,6 +77,7 @@ function Human()
     // Machine à états finis pour savoir comment réagit l'humain en fonction de son état
     switch(this.state)
     {
+      // L'humain est calme
       case HUMAN_STATES.CALM:
         // S'il était en train de se déplacer, il continu
         if(walking)
@@ -92,15 +101,9 @@ function Human()
           }
         }
         break;
+      
+      // Les humains se cachent 
       case HUMAN_STATES.HIDING:
-        // Lancer la procédure pour se cacher 
-        
-        var PanicSide = 1;
-
-        if(Math.random() % 2)
-        {
-          PanicSide = PanicSide * -1;
-        }
         if(walking)
         {
           var difference = vector_sub(target, this.position),
@@ -123,14 +126,91 @@ function Human()
         }
         else
         {
-          go_to(0,0,function(){alert('lol');});
+          if(hidden == false)
+          {
+            var hide_target = (Math.random() > 0.5) ? -100 : 900;
+
+            this.go_to(hide_target, this.position.y, function()
+            {
+              hidden = true;
+            });
+          } 
         }
 
         break;
+      
+      // Les humains panic 
+      case HUMAN_STATES.PANIC:
+        if(walking)
+        {
+          var difference = vector_sub(target, this.position),
+              direction = difference.unit(),
+              deplacement = vector_mul(direction, this.speed);
+
+          if(difference.length() > deplacement.length())
+          {
+            this.position.x += deplacement.x;
+            this.position.y += deplacement.y;
+          }
+          else 
+          {
+            this.position.x = target.x;
+            this.position.y = target.y;
+
+            walking = false;
+            walked_cb(true);
+          }
+        }
+        else
+        {
+          // Les humains paniquent et courent dans tous les sens
+          var PanicSide = 1;
+          if(Math.random() > 0.5)
+          {
+            PanicSide = -1;
+          }
+
+          this.go_to(this.position.x + PanicSide * 100 + Math.random() * 75, this.position.y, null);
+        }
+
+        break;
+
+      // L'humain est figé par la peur
       case HUMAN_STATES.FROZEN:
         if(walking)
         {
           cancel_walk();
+        }
+        break;
+
+      // L'humain se sent en sécurité et se déplace vers le centre
+      case HUMAN_STATES.SECURED:
+        hidden = false; 
+        
+        if(walking)
+        {
+          var difference = vector_sub(target, this.position),
+              direction = difference.unit(),
+              deplacement = vector_mul(direction, this.speed);
+
+          if(difference.length() > deplacement.length())
+          {
+            this.position.x += deplacement.x;
+            this.position.y += deplacement.y;
+          }
+          else 
+          {
+            this.position.x = target.x;
+            this.position.y = target.y;
+
+            walking = false;
+            walked_cb(true);
+          }
+        }
+        else
+        {
+          // Les humains se rassemble sur le mur
+          this.go_to(Math.random() * 800, this.position.y, null);
         }
         break;
     }

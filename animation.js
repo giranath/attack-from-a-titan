@@ -10,7 +10,9 @@
 //==================================================================================
 // CONSTANTES
 //==================================================================================
-var STEP_DURATION = 50;
+var STEP_DURATION = 50,
+    TITAN_UP_SPEED = 2.2,
+    TITAN_DOWN_SPEED = 1.2;
 
 //==================================================================================
 // PROGRAMME PRINCIPAL 
@@ -45,6 +47,7 @@ function initWorld(world)
 
   // Gestion du titan et de ses proies
   var titan_target = null,
+      first_eaten  = true,
       titan_callback = function(titan_p, action)
   {
 
@@ -70,27 +73,44 @@ function initWorld(world)
           else 
           {
             // Personne n'est proche, le titan doit se cacher
-            titan_p.move_arm_to_async(titan_p.position.x, titan_p.position.y + 430, function() 
+            titan_p.speed = TITAN_DOWN_SPEED;
+            titan_p.move_arm_to_async(titan_p.position.x - 20, titan_p.position.y + 430, function() 
             {
               var id = world.find(titan_p.getArm());
               world.changeLayerOf(id, false);
 
-              titan_p.move_arm_to_async(titan_p.position.x - 20, 600, function()
+              titan_p.move_arm_to_async(titan_p.position.x - 20, 800, function()
               {
                 titan_p.go_to(titan_p.position.x, 600, function()
                 {
                   // Le titan est caché
                   world.eachWithTag("human", function(index, entity)
                   {
-                    entity.go_to(Math.random() * 800, Math.random() * 30 + 520, function()
-                    {
-                      
-                    });
+                    entity.state = HUMAN_STATES.SECURED;
                   });
                   
                   // Le titan réapparait pour attraper plus de personnes
                   window.setTimeout(function() 
                   {
+                    window.setTimeout(function() 
+                    {
+                      world.eachWithTag("human", function(index, entity) 
+                      {
+                        if(human.state != HUMAN_STATES.FROZEN)
+                        {
+                          if(Math.random() > 0.1)
+                          {
+                            human.state = HUMAN_STATES.HIDING;
+                          }
+                          else
+                          {
+                            human.state = HUMAN_STATES.PANIC;
+                          }
+                        }                      
+                      });
+                     }, 1600);
+
+                    titan_p.speed = TITAN_UP_SPEED;
                     titan_p.go_to(titan_p.position.x, 0, function(){
                       titan_p.move_arm_to_async(titan_p.position.x, titan_p.position.y + 430, function() 
                       {
@@ -119,6 +139,25 @@ function initWorld(world)
       {
         if(titan_target != null)
         {
+          // S'il s'agit du premier humain mangé alors tous s'enfuient
+          if(first_eaten) 
+          {
+            world.eachWithTag("human", function(index, human) 
+            {
+              if(human.state != HUMAN_STATES.FROZEN)
+              {
+                if(Math.random() > 0.1)
+                {
+                  human.state = HUMAN_STATES.HIDING;
+                }
+                else
+                {
+                  human.state = HUMAN_STATES.PANIC;
+                }
+              }
+            });
+          }
+
           world.removeEntity(world.find(titan_target));
           titan_p.move_arm_to_async(titan_p.position.x + 120, titan_p.position.y + 230, function() 
           {
