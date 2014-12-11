@@ -43,7 +43,7 @@ function createHuman(posx, posy, world)
     human.speed = Math.random() * 10;
     human.tag = "human";
   
-    human.go_to(Math.random() * 800, (Math.random() * 30) + 510, function(succeed)
+    human.go_to(Math.random() * 800, human.position.y, function(succeed)
     {
       // Quoi faire lorque l'humain s'est déplacé 
     });
@@ -73,7 +73,7 @@ function initWorld(world)
 
   // Gestion du titan et de ses proies
   var titan_target = null,
-      first_eaten  = true,
+      first_to_eat  = true,
       titan_callback = function(titan_p, action)
   {
 
@@ -96,6 +96,7 @@ function initWorld(world)
         
             titan_p.move_arm_to_async(titan_target.position.x, titan_target.position.y, titan_callback(titan_p, "eat"));
           }
+          // L'humain est trop loin, il se cache pour les tromper
           else 
           {
             titan_callback(titan_p, "hide")();
@@ -116,8 +117,10 @@ function initWorld(world)
         if(titan_target != null)
         {
           // S'il s'agit du premier humain mangé alors tous s'enfuient
-          if(first_eaten) 
+          if(first_to_eat) 
           {
+            first_to_eat = false;
+
             world.eachWithTag("human", function(index, human) 
             {
               if(human.state != HUMAN_STATES.FROZEN)
@@ -155,6 +158,21 @@ function initWorld(world)
     {
       return function()
       {
+        window.setTimeout(function()
+        {
+          world.eachWithTag("human", function(index, entity)
+          {
+            if(Math.random() > 0.1)
+            {
+              human.state = HUMAN_STATES.HIDING;
+            }
+            else
+            {
+              human.state = HUMAN_STATES.PANIC;
+            }
+          });
+        }, 1000);
+
         titan_p.speed = TITAN_UP_SPEED;
         titan_p.go_to(titan_p.position.x, 0, function()
         {
@@ -185,36 +203,17 @@ function initWorld(world)
           {
             titan_p.go_to(titan_p.position.x, 600, function()
             {
-              // Le titan est caché
+              // Le titan est caché alors les humains se sentent en sécurité
               world.eachWithTag("human", function(index, entity)
               {
                 entity.state = HUMAN_STATES.SECURED;
               });
                   
               // Le titan réapparait pour attraper plus de personnes
-              window.setTimeout(function() 
+              window.setTimeout(function()
               {
-                window.setTimeout(function() 
-                {
-                  world.eachWithTag("human", function(index, entity) 
-                  {
-                    if(human.state != HUMAN_STATES.FROZEN)
-                    {
-                      if(Math.random() > 0.1)
-                      {
-                        human.state = HUMAN_STATES.HIDING;
-                      }
-                      else
-                      {
-                        human.state = HUMAN_STATES.PANIC;
-                      }
-                    }                      
-                  });
-                 }, 1600);
-                
                 titan_callback(titan_p, "show")();
-                
-              }, Math.random() * 5000 + 5000);
+              }, 5000 + Math.random() * 5000);
             });
           });
         });
@@ -256,7 +255,7 @@ function initWorld(world)
   // On spawn 20 humains
   for(var i = 0; i < 18; i++)
   {
-    createHuman(Math.random() * 800,(Math.random() * 30) + 510, world);
+    createHuman(Math.random() * 800, 540 - i * 2.6, world);
   }
 }
 

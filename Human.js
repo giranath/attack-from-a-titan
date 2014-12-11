@@ -188,7 +188,8 @@ function Human()
       // L'humain se sent en sécurité et se déplace vers le centre
       case HUMAN_STATES.SECURED:
         hidden = false; 
-        
+        var self = this;
+          
         if(walking)
         {
           move_sequence();
@@ -198,9 +199,9 @@ function Human()
           // Les humains se rassemble sur le mur
           this.go_to(Math.random() * 800, this.position.y, function()
           {
-            if(this.state == HUMAN_STATES.SECURED)
+            if(self.state == HUMAN_STATES.SECURED)
             {
-              this.state = HUMAN_STATES.CALM;
+              self.state = HUMAN_STATES.CALM;
             }
           });
         }
