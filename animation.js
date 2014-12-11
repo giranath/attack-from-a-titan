@@ -42,8 +42,8 @@ function initWorld(world)
   };
 
   // On joue la musique de fond
-  //sounds.background.volume = 0.4;
-  //sounds.background.play();
+  sounds.background.volume = 0.4;
+  // sounds.background.play();
 
   // Gestion du titan et de ses proies
   var titan_target = null,
@@ -118,7 +118,7 @@ function initWorld(world)
                         titan_callback(titan_p, "pick")();
                       });
                     });
-                  }, Math.random() * 5000);
+                  }, Math.random() * 5000 + 5000);
                 });
               });
             });
@@ -203,11 +203,11 @@ function initWorld(world)
   {
     var human = new Human();
     human.position.x = Math.random() * 800;
-    human.position.y = (Math.random() * 30) + 510;
+    human.position.y = 540 - i * 2.6;
     human.speed = Math.random() * 10;
     human.tag = "human";
   
-    human.go_to(Math.random() * 800, (Math.random() * 30) + 510, function(succeed)
+    human.go_to(Math.random() * 800, human.position.y, function(succeed)
     {
       // Quoi faire lorque l'humain s'est déplacé 
     });

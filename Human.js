@@ -57,14 +57,13 @@ function Human()
    */
   this.onCreate = function(element)
   {
-    var r = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
-    var g = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
-    var b = Math.round((Math.random() * COLOUR_VARIETY) * (255/COLOUR_VARIETY-1));
-    var str = r.toString()+","+g.toString()+","+b.toString();
+    var r = Math.round((Math.random() * COLOUR_VARIETY) * (255 / COLOUR_VARIETY - 1));
+    var g = Math.round((Math.random() * COLOUR_VARIETY) * (255 / COLOUR_VARIETY - 1));
+    var b = Math.round((Math.random() * COLOUR_VARIETY) * (255 / COLOUR_VARIETY - 1));
+    var str = r.toString() + "," + g.toString() + "," + b.toString();
     var people = document.createElementNS("http://www.w3.org/2000/svg", "use");
     people.setAttributeNS("http://www.w3.org/1999/xlink", "href","assets/people.svg#little_pepole" );
-    people.setAttribute("style", "fill:rgb("+str+");stroke:rgb(0,0,0);");
-    //debugger;
+    people.setAttribute("style", "fill:rgb(" + str + ");stroke:rgb(0,0,0);");
     element.appendChild(people);
   }
 
@@ -74,6 +73,30 @@ function Human()
    */
   this.onUpdate = function(dt)
   {
+    var self = this;
+
+    // Pour éviter la répétion de code 
+    var move_sequence = function()
+    {
+      var difference = vector_sub(target, self.position),
+          direction = difference.unit(),
+          deplacement = vector_mul(direction, self.speed);
+
+      if(difference.length() > deplacement.length())
+      {
+        self.position.x += deplacement.x;
+        self.position.y += deplacement.y;
+      }
+      else 
+      {
+        self.position.x = target.x;
+        self.position.y = target.y;
+
+        walking = false;
+        walked_cb(true);
+      }
+    };
+
     // Machine à états finis pour savoir comment réagit l'humain en fonction de son état
     switch(this.state)
     {
@@ -82,23 +105,11 @@ function Human()
         // S'il était en train de se déplacer, il continu
         if(walking)
         {
-          var difference = vector_sub(target, this.position),
-              direction = difference.unit(),
-              deplacement = vector_mul(direction, this.speed);
+          move_sequence();
+        }
+        else
+        {
 
-          if(difference.length() > deplacement.length())
-          {
-            this.position.x += deplacement.x;
-            this.position.y += deplacement.y;
-          }
-          else 
-          {
-            this.position.x = target.x;
-            this.position.y = target.y;
-
-            walking = false;
-            walked_cb(true);
-          }
         }
         break;
       
@@ -106,23 +117,7 @@ function Human()
       case HUMAN_STATES.HIDING:
         if(walking)
         {
-          var difference = vector_sub(target, this.position),
-              direction = difference.unit(),
-              deplacement = vector_mul(direction, this.speed);
-
-          if(difference.length() > deplacement.length())
-          {
-            this.position.x += deplacement.x;
-            this.position.y += deplacement.y;
-          }
-          else 
-          {
-            this.position.x = target.x;
-            this.position.y = target.y;
-
-            walking = false;
-            walked_cb(true);
-          }
+          move_sequence();
         }
         else
         {
@@ -143,23 +138,7 @@ function Human()
       case HUMAN_STATES.PANIC:
         if(walking)
         {
-          var difference = vector_sub(target, this.position),
-              direction = difference.unit(),
-              deplacement = vector_mul(direction, this.speed);
-
-          if(difference.length() > deplacement.length())
-          {
-            this.position.x += deplacement.x;
-            this.position.y += deplacement.y;
-          }
-          else 
-          {
-            this.position.x = target.x;
-            this.position.y = target.y;
-
-            walking = false;
-            walked_cb(true);
-          }
+          move_sequence();
         }
         else
         {
@@ -170,7 +149,7 @@ function Human()
             PanicSide = -1;
           }
 
-          this.go_to(this.position.x + PanicSide * 100 + Math.random() * 75, this.position.y, null);
+          this.go_to(this.position.x + PanicSide * 61 + Math.random() * 75, this.position.y);
         }
 
         break;
@@ -189,28 +168,15 @@ function Human()
         
         if(walking)
         {
-          var difference = vector_sub(target, this.position),
-              direction = difference.unit(),
-              deplacement = vector_mul(direction, this.speed);
-
-          if(difference.length() > deplacement.length())
-          {
-            this.position.x += deplacement.x;
-            this.position.y += deplacement.y;
-          }
-          else 
-          {
-            this.position.x = target.x;
-            this.position.y = target.y;
-
-            walking = false;
-            walked_cb(true);
-          }
+          move_sequence();
         }
         else
         {
           // Les humains se rassemble sur le mur
-          this.go_to(Math.random() * 800, this.position.y, null);
+          this.go_to(Math.random() * 800, this.position.y, function()
+          {
+            this.state = HUMAN_STATES.CALM;
+          });
         }
         break;
     }
