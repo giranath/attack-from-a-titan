@@ -6,20 +6,23 @@ var centre_y = 500;
 function position_soleil(id)
 {
   var frequence_temps = 7.5;
+  svg_Soleil = document.getElementById(id);
   
-  setInterval(function()
-              {
-                svg_Soleil = document.getElementById(id);
-                var date = new Date();
-                var heure = date.getHours();
-                var minute = date.getMinutes();
-                var seconde = date.getSeconds();
-                var heure_seconde = (heure*60+minute)*60+seconde;
-                var total_seconde = 24*60*60;
-  
-                angle_global = (heure_seconde/total_seconde)*360
+  var move_time = function()
+  {  
+    var date = new Date();
+    var heure = date.getHours();
+    var minute = date.getMinutes();
+    var seconde = date.getSeconds();
+    var heure_seconde = (heure*60+minute)*60+seconde;
+    var total_seconde = 24*60*60;
 
-                svg_Soleil.setAttribute('transform', 'rotate('+angle_global+' 400 500)');
-              }, frequence_temps*1000); //*1000, car c'est le temps en milliseconde
+    angle_global = (heure_seconde/total_seconde)*360
+
+    svg_Soleil.setAttribute('transform', 'rotate('+angle_global+' 400 500)');
+  }
+  
+  move_time();
+  setInterval(move_time, frequence_temps*1000); //*1000, car c'est le temps en milliseconde
 }
 
