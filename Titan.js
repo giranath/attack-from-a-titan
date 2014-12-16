@@ -221,7 +221,45 @@ function Titan(arm)
     body.setAttributeNS("http://www.w3.org/1999/xlink", "href", "assets/body.svg#corps");
     body.setAttribute("transform", "translate(0, 250)"); 
 
+    // Création du bras
+    var other_arm = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    other_arm.setAttribute("name", "other_arm");
+    other_arm.setAttribute("transform", "translate(200, 330)");
+    
+    var upperarm = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    upperarm.setAttribute("name", "upperarm");
+    upperarm.setAttribute("style", "stroke:rgb(221, 160, 106);stroke-width:70");
+    upperarm.setAttribute("x1", "0");
+    upperarm.setAttribute("x2", "50");
+    upperarm.setAttribute("y1", "0");
+    upperarm.setAttribute("y2", "100");
+    
+    var forearm = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    forearm.setAttribute("name", "forearm");
+    forearm.setAttribute("style", "stroke:rgb(221, 160, 106);stroke-width:70");
+    forearm.setAttribute("x1", "50");
+    forearm.setAttribute("x2", "60");
+    forearm.setAttribute("y1", "100");
+    forearm.setAttribute("y2", "200");
+   
+    var elbow = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    elbow.setAttribute("name", "elbow");
+    elbow.setAttribute("style", "fill:rgb(221, 160, 106);");
+    elbow.setAttribute("r", "35");
+    elbow.setAttribute("transform", "translate(50, 100)");
+    
+    var shoulder = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    shoulder.setAttribute("name", "shoulder");
+    shoulder.setAttribute("style", "fill:rgb(221, 160, 106);");
+    shoulder.setAttribute("r", "35");
+
+    other_arm.appendChild(upperarm);
+    other_arm.appendChild(forearm);
+    other_arm.appendChild(elbow);
+    other_arm.appendChild(shoulder);
+
     parentElement.appendChild(body);
+    parentElement.appendChild(other_arm);    
     parentElement.appendChild(head_group);
   }
   

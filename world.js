@@ -76,7 +76,7 @@ World.prototype.eachWithTag = function(tag, fn)
   {
     var entity = this.entities[index];
     
-    if(entity && entity.tag != undefined && entity.tag == tag)
+    if(entity != null && entity != undefined && entity.tag != undefined && entity.tag == tag)
     {
       fn(index, entity);
     }
