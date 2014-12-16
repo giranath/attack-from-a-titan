@@ -140,14 +140,14 @@ function Titan(arm)
   var target_position = new Vector2(0, 0),
       hand_moved_callback = function() {}, 
       hand_moving = false,
-      arm_speed = 0.3; 
+      arm_speed = 0.8; 
 
   // Variable pour gérer le déplacement du titan
   var move_to_position = new Vector2(0, 0),
       moved_callback = function(){},
       moving = false;
 
-  this.speed = 1.2;
+  this.speed = 10.2;
 
   this.getArm = function() 
   {
@@ -183,23 +183,11 @@ function Titan(arm)
       var ani = document.createElementNS("http://www.w3.org/2000/svg","animateMotion");
       ani.setAttribute("path", "m" + "0,0"
                                    + " v0,10"
-                                   + " l-25,-10 l25,5 l25,-5 l-25,0");
-      ani.setAttribute("dur", "0.5s");
+                                   + " l-20,-10 l20,5 l20,-5 l-20,0");
+      ani.setAttribute("dur", "0.35s");
       ani.setAttribute("repeatCount", "2");
       ani.setAttribute("id", "animation_bouche");
       mouth.appendChild(ani);
-      
-      var rotateBouche = document.createElementNS("http://www.w3.org/2000/svg", "animateTransform");
-      rotateBouche.setAttribute("attributeName", "transform");
-      rotateBouche.setAttribute("attributeType", "XML");
-      rotateBouche.setAttribute("type", "rotate");
-      rotateBouche.setAttribute("from", "0 " + mouth.getBBox().width/2 + " " + mouth.getBBox().height/2 + "\"");
-      rotateBouche.setAttribute("to", "90 " + mouth.getBBox().width/2 + " " + mouth.getBBox().height/2 + "\"");
-      rotateBouche.setAttribute("begin", "animation_bouche.begin");
-      rotateBouche.setAttribute("dur", "5s");
-      rotateBouche.setAttribute("repeatCount", "1");
-      
-      mouth.appendChild(rotateBouche);
         
       ani.beginElement();
     }

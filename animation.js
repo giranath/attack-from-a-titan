@@ -167,7 +167,7 @@ function initWorld(world)
             window.setTimeout(function()
             {
               titan_callback(titan_p, "pick")();
-            }, 1000);
+            }, 800);
           });
           titan_target = null;
         }
