@@ -17,15 +17,15 @@ function detecter_saison()
   var hiver = new Date(aujourdhui.getFullYear(), 11, 21);
   var saison = "";
 
-  if(aujourdhui < printemp || aujourdhui >= hiver)
+  if(aujourdhui.getMonth() < printemp.getMonth() || aujourdhui.getMonth() >= hiver.getMonth())
   {
     saison="hiver";
   }
-  else if(aujourdhui < ete)
+  else if(aujourdhui.getMonth() < ete.getMonth())
   {
     saison="printemp";
   }
-  else if(aujourdhui < automne)
+  else if(aujourdhui.getMonth() < automne.getMonth())
   {
     saison="ete";
   }
