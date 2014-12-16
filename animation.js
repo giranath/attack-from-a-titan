@@ -235,5 +235,5 @@ function setup()
   // Initialisation du monde
   initWorld(world);  
   
-  position_soleil("soleil_lune");
+  position_soleil("soleil_lune", "background");
 }
