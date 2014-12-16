@@ -258,7 +258,7 @@ function initWorld(world)
   world.addEntity(arm, false);
   
   // On spawn 20 humains
-  for(var i = 0; i < 1; i++)
+  for(var i = 0; i < 20; i++)
   {
     createHuman(Math.random() * 800, 540 - i * 2.6, world);
   }
