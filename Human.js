@@ -197,7 +197,7 @@ function Human()
         else
         {
           // Les humains se rassemble sur le mur
-          this.go_to(Math.random() * 800, this.position.y, function()
+          this.go_to((Math.random() * 400)+200, this.position.y, function()
           {
             if(self.state == HUMAN_STATES.SECURED)
             {
