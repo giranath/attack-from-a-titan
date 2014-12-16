@@ -49,6 +49,7 @@ function createHuman(posx, posy, world)
     });
 
     world.addEntity(human, true);
+    return human;
 }
 
 
@@ -105,10 +106,12 @@ function initWorld(world)
         }
         else
         {
+          titan_callback(titan_p, "hide")();
           // Le titan a mangé toute l'humanité!
           for(var i = 0; i < 10; i++)
           {
-            createHuman((Math.random() < 0.5) ? -50 : 850,(Math.random() * 30) + 510,world)
+            var newBorn = createHuman((Math.random() < 0.5) ? -50 : 850,(Math.random() * 30) + 510,world);
+            newBorn.state = HUMAN_STATES.FROZEN;
           }
         }
       };
