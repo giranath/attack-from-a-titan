@@ -168,7 +168,7 @@ function initWorld(world)
       {
         window.setTimeout(function()
         {
-          world.eachWithTag("human", function(index, entity)
+          world.eachWithTag("human", function(index, human)
           {
             if(Math.random() > 0.1)
             {
@@ -179,7 +179,7 @@ function initWorld(world)
               human.state = HUMAN_STATES.PANIC;
             }
           });
-        }, 1000);
+        }, 5000);
 
         titan_p.speed = TITAN_UP_SPEED;
         titan_p.go_to(titan_p.position.x, 0, function()
