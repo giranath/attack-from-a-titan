@@ -40,7 +40,7 @@ function createHuman(posx, posy, world)
     var human = new Human();
     human.position.x = posx;
     human.position.y = posy;
-    human.speed = Math.random() * 7 + 3;
+    human.speed = Math.random() * 4 + 3;
     human.tag = "human";
   
     human.go_to(Math.random() * 800, human.position.y, function(succeed)
@@ -179,7 +179,7 @@ function initWorld(world)
               human.state = HUMAN_STATES.PANIC;
             }
           });
-        }, 1500);
+        }, 1900);
 
         titan_p.speed = TITAN_UP_SPEED;
         titan_p.go_to(titan_p.position.x, 0, function()
