@@ -11,8 +11,8 @@
 // CONSTANTES
 //==================================================================================
 var STEP_DURATION = 50,
-    TITAN_UP_SPEED = 2.2,
-    TITAN_DOWN_SPEED = 1.2;
+    TITAN_UP_SPEED = 9,  //2.2
+    TITAN_DOWN_SPEED = 7; //1.2;
 
 
 //==================================================================================
@@ -110,7 +110,7 @@ function initWorld(world)
           // Le titan a mangé toute l'humanité!
           for(var i = 0; i < 10; i++)
           {
-            var newBorn = createHuman((Math.random() < 0.5) ? -50 : 850,(Math.random() * 30) + 510,world);
+            var newBorn = createHuman((Math.random() < 0.5) ? -50 : 850,540 - i * 2.6,world);
             newBorn.state = HUMAN_STATES.FROZEN;
           }
         }
@@ -179,7 +179,7 @@ function initWorld(world)
               human.state = HUMAN_STATES.PANIC;
             }
           });
-        }, 5000);
+        }, 1500);
 
         titan_p.speed = TITAN_UP_SPEED;
         titan_p.go_to(titan_p.position.x, 0, function()
